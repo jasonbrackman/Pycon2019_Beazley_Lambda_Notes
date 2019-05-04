@@ -15,7 +15,7 @@ def RIGHT(a):
     return f
 
 
-# BOOLS
+# BOOL
 def TRUE(x):
     return lambda y: x
 
@@ -122,6 +122,37 @@ result = Perhaps(data) >> (lambda d: d.get('a')) \
                        >> (lambda d: d.get('c'))
 print("#4 Perhaps: ", result.value)
 
+# The CONVERSIONS
+# - RULE #1: You can rename an argument
+#            Caveat: You cannot introduce a name clash
+#            Known as: "Alpha Conversion"
+# - Rule #2: You can substitute arguments
+#            Caveat: You cannot introduce a name clash
+#            Python example:
+#               x = 3
+#               y = 4
+#               def f(x, y): return 2*x + y  # does outer x, y effect function scope? No.
+# - Rule #3: You can make a function
+#            Python example:
+#               x = 3
+#               x = (lambda a: a)(3)
+#               >>> 3
+
+# The Reverse
+# Can you subtract?
+# Use pairs?
+# (0, 0)
+# (1, 0)
+# (2, 1)
+# (3, 2)
+
+
+
+CONS = lambda a: lambda b: (lambda s: s(a)(b))
+p = CONS(2)(3)
+CAR = lambda p: p(TRUE)
+CDR = lambda p: p(FALSE)
+
 if __name__ == "__main__":
 
     # Examples of currying
@@ -156,3 +187,9 @@ if __name__ == "__main__":
 
     result = MUL(FOUR)(THREE)
     print(result(incr)(0))
+
+    p = CONS(2)(3)
+    assert p(TRUE) == 2
+    assert p(FALSE) == 3
+
+
