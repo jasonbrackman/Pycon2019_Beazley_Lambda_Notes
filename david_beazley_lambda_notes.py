@@ -6,12 +6,14 @@
 def LEFT(a):
     def f(b):
         return a
+
     return f
 
 
 def RIGHT(a):
     def f(b):
         return b
+
     return f
 
 
@@ -41,6 +43,7 @@ def AND(x):
 def OR(x):
     return lambda y: x(x)(y)
 
+
 # Lets represent numbers!
 
 
@@ -65,11 +68,11 @@ MUL = lambda x: lambda y: lambda f: y(x(f))
 
 # DIGRESSION
 
-data = {'a': {'b': {'c': 42}}}
+data = {"a": {"b": {"c": 42}}}
 
 
 def getc(d):
-    return d['a']['b']['c']
+    return d["a"]["b"]["c"]
 
 
 print("#1 getc():", getc(data))
@@ -78,11 +81,11 @@ print("#1 getc():", getc(data))
 
 def getc(d):
     # This one is defensive...
-    d = d.get('a')
+    d = d.get("a")
     if d is not None:
-        d = d.get('b')
+        d = d.get("b")
     if d is not None:
-        d = d.get('c')
+        d = d.get("c")
     return d
 
 
@@ -97,11 +100,12 @@ def perhaps(d, func):
         return None
 
 
-perhaps(data, lambda d: d.get('a'))
+perhaps(data, lambda d: d.get("a"))
 
-result = perhaps(perhaps(perhaps(data, lambda d: d.get('a')),
-                                       lambda d: d.get('b')),
-                                       lambda d: d.get('c'))
+result = perhaps(
+    perhaps(perhaps(data, lambda d: d.get("a")), lambda d: d.get("b")),
+    lambda d: d.get("c"),
+)
 print("#3 perhaps: ", result)
 
 
@@ -117,9 +121,12 @@ class Perhaps:
             return self
 
 
-result = Perhaps(data) >> (lambda d: d.get('a')) \
-                       >> (lambda d: d.get('b')) \
-                       >> (lambda d: d.get('c'))
+result = (
+    Perhaps(data)
+    >> (lambda d: d.get("a"))
+    >> (lambda d: d.get("b"))
+    >> (lambda d: d.get("c"))
+)
 print("#4 Perhaps: ", result.value)
 
 # The CONVERSIONS
@@ -147,7 +154,6 @@ print("#4 Perhaps: ", result.value)
 # (3, 2)
 
 
-
 CONS = lambda a: lambda b: (lambda s: s(a)(b))
 p = CONS(2)(3)
 CAR = lambda p: p(TRUE)
@@ -167,15 +173,15 @@ if __name__ == "__main__":
     assert NOT(TRUE) is FALSE
     assert NOT(FALSE) is TRUE
 
-    assert(AND(TRUE)(TRUE) is TRUE)
-    assert(AND(TRUE)(FALSE) is FALSE)
-    assert(AND(FALSE)(FALSE) is FALSE)
-    assert(AND(FALSE)(TRUE) is FALSE)
+    assert AND(TRUE)(TRUE) is TRUE
+    assert AND(TRUE)(FALSE) is FALSE
+    assert AND(FALSE)(FALSE) is FALSE
+    assert AND(FALSE)(TRUE) is FALSE
 
-    assert(OR(TRUE)(TRUE) is TRUE)
-    assert(OR(TRUE)(FALSE) is TRUE)
-    assert(OR(FALSE)(TRUE) is TRUE)
-    assert(OR(FALSE)(FALSE) is FALSE)
+    assert OR(TRUE)(TRUE) is TRUE
+    assert OR(TRUE)(FALSE) is TRUE
+    assert OR(FALSE)(TRUE) is TRUE
+    assert OR(FALSE)(FALSE) is FALSE
 
     # Func to help demonstrate what is going on with counting -- but is only for illustration purposes
     # - it breaks the rules of only functions and single arguments and no numbers, etc.
@@ -191,5 +197,3 @@ if __name__ == "__main__":
     p = CONS(2)(3)
     assert p(TRUE) == 2
     assert p(FALSE) == 3
-
-

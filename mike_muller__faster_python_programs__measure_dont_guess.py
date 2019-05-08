@@ -14,7 +14,7 @@ def use_cprofile_on_function():
     profile.runcall(expensive_op)
     profile.print_stats()
 
-    cProfile.run('expensive_op()', '.')
+    cProfile.run("expensive_op()", ".")
 
 
 def use_cprofile_to_store_results():
@@ -52,6 +52,7 @@ def python37_timing_options():
 
     print(start1 - end1)  # wall clock result
     print(start2 - end2)  # cpu time result
+
 
 if __name__ == "__main__":
     pass
