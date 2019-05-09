@@ -2,12 +2,13 @@
 # - using lazy initialization - if its never needed its never instantiated.
 # - Note that this is not thread safe
 
-
+# the following is simple to understand -- but not very elegant
 class _Tigger:
     def __str__(self):
         return "I'm the only one."
 
-    def roar(self):
+    @staticmethod
+    def roar():
         return "Grrr!"
 
 
@@ -21,7 +22,9 @@ def Tigger():
         _instance = _Tigger()
     return _instance
 
+# --------------------------------------------------------------------
 
+# Much nicer IMHO
 class Singleton:
     _instance = None
 
@@ -30,9 +33,9 @@ class Singleton:
             cls._instance = object.__new__(cls, *args, **kwargs)
         return cls._instance
 
+
 class TiggerNew(Singleton):
     pass
-
 
 
 if __name__ == "__main__":
